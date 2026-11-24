@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jaeyeon Park | Academic Profile</title>
+<style>
+  :root { --accent: #2962ff; --text: #1f2430; --muted: #6b7280; --line: #e5e7eb; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+  body { font-family: "Helvetica Neue", Arial, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; color: var(--text); line-height: 1.65; background: #fff; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; height: 56px; background: rgba(255,255,255,.95); border-bottom: 1px solid var(--line);
+        display: flex; align-items: center; justify-content: space-between; padding: 0 24px; z-index: 10; }
+  nav .brand { font-weight: 700; color: var(--text); }
+  nav .menu { display: flex; gap: 22px; }
+  nav .menu a { color: var(--text); font-size: 15px; }
+  nav .menu a:hover { color: var(--accent); text-decoration: none; }
+
+  main { max-width: 880px; margin: 0 auto; padding: 0 22px 40px; }
+  section { padding-top: 56px; }
+  h2 { font-size: 22px; margin-bottom: 14px; padding-bottom: 6px; border-bottom: 2px solid var(--line); }
+  h3 { font-size: 17px; margin: 18px 0 6px; }
+
+  /* S01 Home */
+  #home { padding-top: 110px; display: flex; gap: 36px; align-items: center; flex-wrap: wrap; }
+  .avatar { width: 170px; height: 170px; border-radius: 50%; background: linear-gradient(135deg, #2962ff, #7aa2ff);
+            color: #fff; font-size: 54px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  #home h1 { font-size: 36px; line-height: 1.2; }
+  #home .kr { color: var(--muted); font-weight: 400; font-size: 22px; }
+  #home .role { font-size: 18px; color: var(--muted); margin: 6px 0 14px; }
+  .btns a { display: inline-block; border: 1px solid var(--accent); padding: 7px 16px; border-radius: 6px; margin: 0 8px 8px 0; font-size: 14px; }
+  .btns a.fill { background: var(--accent); color: #fff; }
+  .btns a:hover { text-decoration: none; opacity: .88; }
+
+  /* S02 About */
+  ul.plain { padding-left: 20px; }
+  ul.plain li { margin-bottom: 6px; }
+  .edu { margin-bottom: 8px; }
+  .edu span { color: var(--muted); }
+  table.news { width: 100%; border-collapse: collapse; }
+  table.news td { padding: 6px 0; vertical-align: top; border-bottom: 1px dashed var(--line); }
+  table.news td:first-child { width: 110px; color: var(--muted); white-space: nowrap; }
+  .pub { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; }
+  .pub .thumb { width: 90px; height: 64px; background: #f1f5f9; border: 1px solid var(--line); border-radius: 6px; flex-shrink: 0;
+                display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 12px; }
+  .pub .t { font-weight: 600; }
+  .pub .m { color: var(--muted); font-size: 14px; }
+
+  /* S03 Projects */
+  .card { border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin-bottom: 14px; }
+  .card h3 { margin: 0 0 4px; }
+  .card p { color: var(--muted); margin-bottom: 10px; }
+  .btn { background: var(--accent); color: #fff; border: 0; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+  .btn:hover { opacity: .9; }
+
+  /* S04 Contact */
+  .contact-links a { margin-right: 6px; }
+  .contact-links span { color: var(--muted); margin-right: 6px; }
+
+  /* S05 Guestbook */
+  form { display: grid; gap: 10px; margin-bottom: 18px; }
+  input, textarea { padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font: inherit; width: 100%; }
+  textarea { height: 90px; resize: vertical; }
+  #msg { color: #dc2626; font-size: 14px; min-height: 20px; }
+  .entry { border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; margin-bottom: 10px; }
+  .entry small { color: var(--muted); }
+
+  #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 20; align-items: center; justify-content: center; }
+  #modal.open { display: flex; }
+  #modal .box { background: #fff; border-radius: 12px; padding: 24px; max-width: 480px; width: 90%; }
+  #modal .box h3 { margin-top: 0; }
+  #modal .box p { margin-bottom: 8px; }
+
+  footer { text-align: center; color: var(--muted); font-size: 13px; padding: 30px 0 46px; border-top: 1px solid var(--line); margin-top: 40px; }
+  @media (max-width: 560px) { nav .menu { gap: 12px; } nav .menu a { font-size: 13px; } nav .brand { display: none; } #home h1 { font-size: 28px; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="brand">Jaeyeon Park</span>
+  <div class="menu">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+    <a href="#guestbook">Guestbook</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- S01 Home -->
+<section id="home">
+  <!-- To use a photo: replace the initials with <img src="profile.jpg" alt="Jaeyeon Park"> -->
+  <div class="avatar">JP</div>
+  <div>
+    <h1>Jaeyeon Park <span class="kr">박재연</span></h1>
+    <p class="role">Computer Science Undergraduate, Computer Vision Research<br>Chungnam National University</p>
+    <div class="btns">
+      <a class="fill" href="#about">About me</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</section>
+
+<!-- S02 About -->
+<section id="about">
+  <h2>About</h2>
+  <p>I am an undergraduate student in Computer Science and Engineering at Chungnam National University and an undergraduate research intern
+     in a computer vision lab. I am interested in generative models, especially diffusion-based image generation,
+     and I am preparing for graduate studies in this area.</p>
+
+  <h3>Research Interests</h3>
+  <ul class="plain">
+    <li><b>Computer Vision</b></li>
+    <li><b>Diffusion Models</b> and image generation (e.g., panorama generation)</li>
+  </ul>
+
+  <h3>Education</h3>
+  <div class="edu"><b>B.S. in Computer Science and Engineering</b>, Chungnam National University <span>(GPA 4.26 / 4.5)</span></div>
+
+  <h3>Experience & Leadership</h3>
+  <ul class="plain">
+    <li>Undergraduate Research Intern, Computer Vision Lab</li>
+    <li>Student Council President</li>
+  </ul>
+
+  <h3>News</h3>
+  <table class="news">
+    <!-- Edit these rows with your real updates -->
+    <tr><td>2026.11</td><td>Built my academic profile site on AWS (S3 + CloudFront).</td></tr>
+    <tr><td>(date)</td><td>(Add a paper acceptance or lab update here.)</td></tr>
+  </table>
+
+  <h3>Publications</h3>
+  <div class="pub">
+    <div class="thumb">Paper</div>
+    <div>
+      <div class="t">(Paper title: edit here)</div>
+      <div class="m"><b>Jaeyeon Park</b>, (co-authors)</div>
+      <div class="m">(Venue, Year) / <a href="#">Paper</a> / <a href="#">Code</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- S03 Projects -->
+<section id="projects">
+  <h2>Projects</h2>
+  <div class="card">
+    <h3>MultiDiffusion Panorama Research</h3>
+    <p>Research on diffusion-based panorama image generation.</p>
+    <button class="btn" data-key="p1">Details</button>
+  </div>
+  <div class="card">
+    <h3>DDPM &amp; CFG on MNIST</h3>
+    <p>Implementation of DDPM with Classifier-Free Guidance on MNIST.</p>
+    <button class="btn" data-key="p2">Details</button>
+  </div>
+</section>
+
+<!-- S04 Contact -->
+<section id="contact">
+  <h2>Contact</h2>
+  <p class="contact-links">
+    <!-- Replace the three links below with your own -->
+    <a href="mailto:your-email@example.com">Email</a><span>/</span>
+    <a href="https://github.com/your-id" target="_blank" rel="noopener">GitHub</a><span>/</span>
+    <a href="https://www.linkedin.com/in/your-id" target="_blank" rel="noopener">LinkedIn</a>
+  </p>
+</section>
+
+<!-- S05 Guestbook -->
+<section id="guestbook">
+  <h2>Guestbook</h2>
+  <form id="form">
+    <input id="name" placeholder="Name (max 20 characters)" maxlength="40">
+    <textarea id="text" placeholder="Message (max 200 characters)"></textarea>
+    <div id="msg"></div>
+    <div><button class="btn" type="submit">Leave a message</button></div>
+  </form>
+  <div id="list"></div>
+</section>
+
+</main>
+
+<footer>© 2026 Jaeyeon Park, Cloud Database course project</footer>
+
+<div id="modal"><div class="box">
+  <h3 id="m-title"></h3>
+  <p id="m-period"></p><p id="m-role"></p><p id="m-result"></p>
+  <br><button class="btn" id="m-close">Close</button>
+</div></div>
+
+<script>
+  // Edit period / role / result with your own details
+  const projects = {
+    p1: { title: "MultiDiffusion Panorama Research", period: "Period: (edit)", role: "Role: (edit)", result: "Result: (edit)" },
+    p2: { title: "DDPM & CFG on MNIST",             period: "Period: (edit)", role: "Role: (edit)", result: "Result: (edit)" }
+  };
+  const modal = document.getElementById("modal");
+  document.querySelectorAll("[data-key]").forEach(b => b.addEventListener("click", () => {
+    const p = projects[b.dataset.key];
+    document.getElementById("m-title").textContent = p.title;
+    document.getElementById("m-period").textContent = p.period;
+    document.getElementById("m-role").textContent = p.role;
+    document.getElementById("m-result").textContent = p.result;
+    modal.classList.add("open");
+  }));
+  document.getElementById("m-close").addEventListener("click", () => modal.classList.remove("open"));
+  modal.addEventListener("click", e => { if (e.target === modal) modal.classList.remove("open"); });
+
+  // Guestbook: stored in the page only for now (AppSync + DynamoDB will be connected later)
+  const entries = [];
+  const listEl = document.getElementById("list");
+  const msgEl = document.getElementById("msg");
+  function render() {
+    listEl.innerHTML = "";
+    entries.slice(0, 10).forEach(en => {
+      const d = document.createElement("div"); d.className = "entry";
+      const b = document.createElement("b"); b.textContent = en.name;
+      const s = document.createElement("small"); s.textContent = "  " + en.time;
+      const p = document.createElement("p"); p.textContent = en.text;
+      d.append(b, s, p); listEl.appendChild(d);
+    });
+  }
+  document.getElementById("form").addEventListener("submit", e => {
+    e.preventDefault();
+    const name = document.getElementById("name").value.trim();
+    const text = document.getElementById("text").value.trim();
+    if (!name || !text) { msgEl.textContent = "Please enter both a name and a message."; return; }
+    if (name.length > 20) { msgEl.textContent = "Name must be 20 characters or fewer."; return; }
+    if (text.length > 200) { msgEl.textContent = "Message must be 200 characters or fewer."; return; }
+    msgEl.textContent = "";
+    entries.unshift({ name, text, time: new Date().toLocaleString("en-US") });
+    render();
+    e.target.reset();
+  });
+</script>
+</body>
+</html>
