@@ -277,6 +277,9 @@
     }
   });
 
+  // Clear the guide text as soon as the visitor edits the form again
+  ["name", "text"].forEach(id => document.getElementById(id).addEventListener("input", () => { msgEl.textContent = ""; }));
+
   loadEntries();
 </script>
 </body>
