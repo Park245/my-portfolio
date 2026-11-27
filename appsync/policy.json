@@ -1,0 +1,1 @@
+{"Version":"2012-10-17","Statement":[{"Sid":"GuestbookPutAndQueryOnly","Effect":"Allow","Action":["dynamodb:PutItem","dynamodb:Query"],"Resource":"arn:aws:dynamodb:ap-northeast-2:888913588218:table/Guestbook"}]}

@@ -1,0 +1,19 @@
+type Entry {
+  id: ID!
+  name: String!
+  message: String!
+  time: String!
+}
+
+type Query {
+  listEntries: [Entry]
+}
+
+type Mutation {
+  addEntry(name: String!, message: String!): Entry
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}

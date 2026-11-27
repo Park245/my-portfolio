@@ -1,0 +1,5 @@
+.env
+.api_id
+*.pem
+.aws/
+credentials*

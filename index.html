@@ -12,7 +12,7 @@
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
 
-  nav { position: fixed; top: 0; left: 0; right: 0; height: 56px; background: rgba(255,255,255,.95); border-bottom: 1px solid var(--line);
+  nav { position: fixed; top: 0; left: 0; right: 0; height: 56px; background: #fff; border-bottom: 1px solid var(--line);
         display: flex; align-items: center; justify-content: space-between; padding: 0 24px; z-index: 10; }
   nav .brand { font-weight: 700; color: var(--text); }
   nav .menu { display: flex; gap: 22px; }
@@ -215,21 +215,47 @@
   document.getElementById("m-close").addEventListener("click", () => modal.classList.remove("open"));
   modal.addEventListener("click", e => { if (e.target === modal) modal.classList.remove("open"); });
 
-  // Guestbook: stored in the page only for now (AppSync + DynamoDB will be connected later)
-  const entries = [];
+  // Guestbook: saved to DynamoDB through the AppSync GraphQL API (API Key auth, visitors need no login).
+  // The API key is public by design (front-end call) and expires automatically.
+  const APPSYNC_URL = "https://daskkleoovhg5d7ykz6klmsgnu.appsync-api.ap-northeast-2.amazonaws.com/graphql";
+  const APPSYNC_KEY = "da2-cadrsqx4e5fbzeaneofcndmvxy";
   const listEl = document.getElementById("list");
   const msgEl = document.getElementById("msg");
-  function render() {
+  const submitBtn = document.querySelector("#form button[type=submit]");
+
+  async function gql(query, variables) {
+    const res = await fetch(APPSYNC_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-api-key": APPSYNC_KEY },
+      body: JSON.stringify({ query, variables })
+    });
+    const json = await res.json();
+    if (json.errors && json.errors.length) throw new Error(json.errors[0].message);
+    return json.data;
+  }
+
+  function render(entries) {
     listEl.innerHTML = "";
     entries.slice(0, 10).forEach(en => {
       const d = document.createElement("div"); d.className = "entry";
       const b = document.createElement("b"); b.textContent = en.name;
-      const s = document.createElement("small"); s.textContent = "  " + en.time;
-      const p = document.createElement("p"); p.textContent = en.text;
+      const s = document.createElement("small"); s.textContent = "  " + new Date(en.time).toLocaleString("en-US");
+      const p = document.createElement("p"); p.textContent = en.message;
       d.append(b, s, p); listEl.appendChild(d);
     });
   }
-  document.getElementById("form").addEventListener("submit", e => {
+
+  async function loadEntries() {
+    try {
+      const data = await gql("query { listEntries { id name message time } }");
+      render(data.listEntries || []);
+    } catch (err) {
+      console.error(err);
+      msgEl.textContent = "Could not load messages. Please try again later.";
+    }
+  }
+
+  document.getElementById("form").addEventListener("submit", async e => {
     e.preventDefault();
     const name = document.getElementById("name").value.trim();
     const text = document.getElementById("text").value.trim();
@@ -237,10 +263,21 @@
     if (name.length > 20) { msgEl.textContent = "Name must be 20 characters or fewer."; return; }
     if (text.length > 200) { msgEl.textContent = "Message must be 200 characters or fewer."; return; }
     msgEl.textContent = "";
-    entries.unshift({ name, text, time: new Date().toLocaleString("en-US") });
-    render();
-    e.target.reset();
+    submitBtn.disabled = true;
+    try {
+      await gql("mutation Add($name: String!, $message: String!) { addEntry(name: $name, message: $message) { id } }",
+                { name, message: text });
+      e.target.reset();
+      await loadEntries();
+    } catch (err) {
+      console.error(err);
+      msgEl.textContent = "Could not save your message. Please try again.";
+    } finally {
+      submitBtn.disabled = false;
+    }
   });
+
+  loadEntries();
 </script>
 </body>
 </html>
